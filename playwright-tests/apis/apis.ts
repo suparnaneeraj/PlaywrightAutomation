@@ -1,5 +1,7 @@
 import { APIRequestContext } from "playwright-core";
+
 let apiBaseURL = process.env.BASE_URL;
+
 export class APIs {
     private apiRequest: APIRequestContext;
     constructor(request: APIRequestContext) {

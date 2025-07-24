@@ -15,14 +15,18 @@ export class DashboardPage {
         await this.page.getByRole('button', { name: 'Add' }).click();
     }
 
-    async getAllItemsList() {
-        const listItems = this.page.getByRole('listitem');
-        return listItems;
-
+    async checkItemInToDosList(itemName: string) {
+        const listItems = await this.page.getByRole('listitem').allTextContents();
+        if (listItems.includes(itemName)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     async getPositionOfItem(itemName: string) {
-        const listItems = await this.getAllItemsList();
+        const listItems = this.page.getByRole('listitem');
         let position = 0;
         for (const item of await listItems.all()) {
             if (await item.textContent() != itemName) {
