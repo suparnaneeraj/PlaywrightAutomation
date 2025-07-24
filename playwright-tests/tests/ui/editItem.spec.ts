@@ -22,17 +22,19 @@ test.describe("Edit functionality", () => {
         await expect(page.getByRole('heading')).toHaveText('Dashboard');
         dashboardPage = new DashboardPage(page);
         await dashboardPage.createToDoItem(itemToAdd);
-        itemPosition = await dashboardPage.getPositionOfItem(itemToAdd);
     })
 
     test('should be able to edit an item successfully', async () => {
-        await dashboardPage.editItemAndSave(itemPosition, updatedItemName);
-        await expect(await dashboardPage.getItemAtAPosition(itemPosition)).toHaveText(updatedItemName);
+        await dashboardPage.editItemAndSave(itemToAdd, updatedItemName);
+        await expect(await dashboardPage.getDashboardPageTitle()).toHaveText('Dashboard')
+        const itemFound = await dashboardPage.findItemInList(updatedItemName);
+        expect(itemFound).toBeTruthy();
     })
 
     test('should not update item when cancel is clicked', async () => {
-        await dashboardPage.editItemAndCancel(itemPosition, updatedItemName);
-        await expect(await dashboardPage.getItemAtAPosition(itemPosition)).not.toHaveText(updatedItemName);
+        await dashboardPage.editItemAndCancel(itemToAdd, updatedItemName);
+        const itemFound = await dashboardPage.findItemInList(updatedItemName);
+        expect(itemFound).toBeFalsy();
     })
 
     test.afterEach(async () => {

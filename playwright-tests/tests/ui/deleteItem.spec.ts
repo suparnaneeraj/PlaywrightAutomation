@@ -7,7 +7,7 @@ let loginPage: LoginPage;
 let dashboardPage: DashboardPage;
 const username = process.env.USERNAME!;
 const password = process.env.PASSWORD!;
-let itemPosition: number;
+
 let page: Page;
 let itemToAdd = 'Item' + faker.string.alphanumeric(5);
 
@@ -20,15 +20,15 @@ test.describe('Delete Functionality', () => {
         await loginPage.loginToApplication(username, password);
         dashboardPage = new DashboardPage(page);
         await dashboardPage.createToDoItem(itemToAdd);
-        itemPosition = await dashboardPage.getPositionOfItem(itemToAdd);
+        const itemFound = await dashboardPage.findItemInList(itemToAdd);
+        expect(itemFound).toBeTruthy();
+
     })
 
     test('should be able to delete item successfully', async () => {
-        await dashboardPage.deleteItem(itemPosition);
-        let itemDeleted = itemToAdd;
-        const item = await dashboardPage.getItemAtAPosition(itemPosition)
-        console.log(item);
-        expect(await dashboardPage.getItemAtAPosition(itemPosition)).not.toBe(itemToAdd);
+        await dashboardPage.deleteItem(itemToAdd);
+        const itemFound = await dashboardPage.findItemInList(itemToAdd);
+        expect(itemFound).toBeFalsy();
     })
 
     test.afterEach(async () => {

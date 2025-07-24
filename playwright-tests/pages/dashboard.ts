@@ -15,40 +15,32 @@ export class DashboardPage {
         await this.page.getByRole('button', { name: 'Add' }).click();
     }
 
-    async checkItemInToDosList(itemName: string) {
-        const listItems = await this.page.getByRole('listitem').allTextContents();
-        if (listItems.includes(itemName)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    async getPositionOfItem(itemName: string) {
+    async findItemInList(itemName: string) {
+        const heading = await this.page.getByRole('heading').textContent();
         const listItems = this.page.getByRole('listitem');
-        let position = 0;
-        for (const item of await listItems.all()) {
-            if (await item.textContent() != itemName) {
-                position++;
-            }
-            else {
+        let index: number;
+        let present = false;
+        for (index = 0; index < await listItems.count(); index++) {
+            if (await listItems.nth(index).textContent() == itemName) {
+                present = true;
                 break;
             }
         }
-        return position;
+        return present;
     }
-    async editItemAndSave(itemPosition: number, newItemName: string) {
+    async editItemAndSave(itemAdded: string, newItemName: string) {
         const itemfield = this.page.getByLabel('Todo Title');
-        await this.page.getByTestId('EditIcon').nth(itemPosition).click()
+        const listItem = await this.getItemFromList(itemAdded);
+        await listItem.getByTestId('EditIcon').click()
         await itemfield.clear();
         await itemfield.fill(newItemName);
         await this.page.getByRole('button', { name: 'Save' }).click();
 
     }
-    async editItemAndCancel(itemPosition: number, newItemName: string) {
+    async editItemAndCancel(itemAdded: string, newItemName: string) {
         const itemfield = this.page.getByLabel('Todo Title');
-        await this.page.getByTestId('EditIcon').nth(itemPosition).click();
+        const listItem = await this.getItemFromList(itemAdded);
+        await listItem.getByTestId('EditIcon').click()
         await itemfield.clear();
         await itemfield.fill(newItemName);
         await this.page.getByRole('button', { name: 'Cancel' }).click();
@@ -58,8 +50,15 @@ export class DashboardPage {
         return this.page.getByRole('listitem').nth(positionOfItem);
     }
 
-    async deleteItem(itemPosition: number) {
-        await this.page.getByTestId('DeleteIcon').nth(itemPosition).click();
+    async deleteItem(itemName: string) {
+        const listItem = await this.getItemFromList(itemName);
+        await listItem.getByTestId('DeleteIcon').click()
     }
+
+    async getItemFromList(itemName: string) {
+        return this.page.getByRole('listitem').filter({ has: this.page.locator('span', { hasText: itemName }) })
+    }
+
+
 
 }

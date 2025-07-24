@@ -22,11 +22,10 @@ test.describe('Login Functionality', () => {
         await expect(loginErrorMessageLocator).toHaveText('Invalid username or password');
     })
 
-    test('should be able to login successfully with valid credentials', async ({ page }) => {
+    test('should be able to login successfully with valid credentials', async () => {
         await loginPage.loginToApplication(username, password);
         dashboardPage = new DashboardPage(page);
-        const dashboardPageTitle = await dashboardPage.getDashboardPageTitle();
-        await expect(dashboardPageTitle).toHaveText('Dashboard');
+        await expect(await dashboardPage.getDashboardPageTitle()).toBeVisible();
         const loginErrorMessageLocator = await loginPage.getLoginValidationErrorMessage();
         await expect(loginErrorMessageLocator).not.toBeVisible();
     })

@@ -24,17 +24,19 @@ test.describe("Create Functionality", () => {
 
     test('should be able to create a Todo Item successfully', async () => {
         await dashboardPage.createToDoItem(itemToAdd);
-        expect(await dashboardPage.checkItemInToDosList(itemToAdd)).toBeTruthy();
+        const itemFound = await dashboardPage.findItemInList(itemToAdd);
+        expect(itemFound).toBeTruthy();
     })
 
     //This test would fail as the app will allow same items to add again and again
     test('should not be able to add same item again', async ({ page }) => {
-        dashboardPage = new DashboardPage(page);
         await dashboardPage.createToDoItem(itemToAdd);
-        expect(await dashboardPage.checkItemInToDosList(itemToAdd)).toBeTruthy();
+        const itemFound = await dashboardPage.findItemInList(itemToAdd);
+        expect(itemFound).toBeTruthy();
         //Add the same item again
         await dashboardPage.createToDoItem(itemToAdd);
-        expect(await dashboardPage.checkItemInToDosList(itemToAdd)).toBeFalsy();
+        const secondItemFound = await dashboardPage.findItemInList(itemToAdd);
+        expect(secondItemFound).toBeFalsy();
     })
 
     test.afterEach(async () => {
