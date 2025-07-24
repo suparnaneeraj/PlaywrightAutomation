@@ -26,25 +26,27 @@ This project is a simple application with Login and CRUD functionality , built u
 
 ####  1.  Install dependencies
 
+Clone the repository https://github.com/suparnaneeraj/PlaywrightAutomation from Github and open the project in an IDE Example VS code)
+From the root directory run the following commands:
 -  `cd backend && npm install`
 -  `cd frontend && npm install`
 -  `cd playwright-tests && npm install`
 
 ####  2.  Run the backend
 
-- `cd backend`
+-  From the backend directory run the following commands:
 - `npm start`
 - The server will run on http://localhost:3001 by default.
 
 ####  3.  Run the frontend
 
--  `cd frontend`
+-  From the frontend directory run the following commands:
 -  `npm run dev`
 -  The app will run on http://localhost:5173 by default
 
 ####  4. Run playwright tests
 
--  `cd playwright-tests`
+-  From the playwright-tests directory run the following commands:
 -  To run the tests in headless mode use `npx playwright test`
 -  Once test is finished, Html report will open in default browser (only if test failed)
 -  To manually open report (on Pass), run `npm run report`
