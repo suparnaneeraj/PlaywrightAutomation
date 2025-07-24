@@ -48,10 +48,9 @@ From the root directory run the following commands:
 
 -  From the playwright-tests directory run the following commands:
 -  To run the tests in headless mode use `npx playwright test`
--  Once test is finished, Html report will open in default browser (only if test failed)
--  To manually open report (on Pass), run `npm run report`
--  Video recording will be found under folder `test-result/<testcase-name>/video.webm`
--  To run the tests in UI mode use `npx playwright test --ui` and the Playwright UI would open up.
+-  Once test is finished, Html report will open in default browser
+-  To manually open the report, run `npm run report`
+-  To run the tests in UI mode use `npx playwright test --ui` and the Playwright UI would open up and click on any tests to execute.
 
 ##  Notes
 -   All tests are independent of each other.
