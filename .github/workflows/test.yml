@@ -1,0 +1,31 @@
+name: Playwright Tests
+on: 
+  push:
+    branches: main
+  workflow_dispatch:
+jobs:
+  Run-Playwright-tests:
+    environment:  testing
+    runs-on:  ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright dependencies
+        working-directory:  ./playwright-tests
+        run:  npm ci
+      - name: Install Playwright Browsers
+        working-directory: ./playwright-tests
+        run:  npx playwright install chromium --with-deps
+      - name: Run Playwright tests
+        working-directory:  ./playwright-tests
+        run:  npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: ${{!cancelled()}}
+        with:
+          name: playwright-tests-report
+          path: ./playwright-tests/playwright-report/
+          retention-days: 30
